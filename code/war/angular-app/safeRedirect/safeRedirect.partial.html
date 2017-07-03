@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <h3>Please hold on ...</h3>
+                <p>We are busy at checking the safety of your destination with the latest information available. If found to be safe, you will be redirected to your destination automatically ...</p>
+                <h3 ng-if="safeRedirectCtrl.notSafe == true" class="alert alert-danger">
+                    Ouch, sorry, your destination is a suspected malicious site. We cannot take you there!
+                </h3>
+                <h3 ng-if="safeRedirectCtrl.networkError == true" class="alert alert-danger">
+                    Ouch, sorry, we failed to determine the safety of your destination.To err on side of safety, we will not redirect. Please retry. 
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>

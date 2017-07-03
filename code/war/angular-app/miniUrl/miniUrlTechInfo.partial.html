@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <h3>Usage</h3>
+                <p>On the Home page, enter your long URL and hit the button to get your minified URL.
+                You need to prepend the protocol 'http://' or 'https://' to the URL. This 
+                allows for future support of other protocols without the server making assumptions
+                which protocol the resource is to be requested with.</p>
+                <h3>Assumptions</h3>
+                <ul>
+                    <li>~50 requests per second are expected. This yields ~16*10^9 requests over planned 10 years of operation.</li>
+                </ul>
+                <h3>Implementation</h3>
+                <ul>
+                    <li>Client front end implemented with JavaScript/AngularJS.</li>
+                    <li>Application service back end implemented with Java/Servlets.</li>
+                    <li>URLs are cached in memory using an ArrayList. An encoded value of the array index is used as the lookup value for the URL. 
+                    This is temporary solution due to time / cost constraints. A Todo item (see below) is to replace this cache with an HBase DB. </li>
+                    <li>Encoding algorithm selected is Base32 (see http://google.github.io/guava/releases/22.0-android/api/docs/). This yields easy human-readable output,  
+                    and 32 possible characters in 8 character output support much more then the assumed number of requests stated above.</li>
+                    <li>Safe browsing: <a href="https://developers.google.com/safe-browsing/v4/lookup-api" target="_blank">Google Safe Browsing Lookup API (v4)</a> 
+                    is used to test submitted URLs to verify they do not point to malicious web sites. The check is performed twice, on the <b>client</b> side: 
+                    (i) when the user submits the long URL for minification, and (ii) when the user attempts to navigate to the URL. 
+                    The initial check may be overcome by a malicious user (by performing a direct HTTP request [i.e., not via the Home page], or by generating a fresh  
+                    domain name unknown to the API). The second check by the end user will test the destination URL with most up to date information. Performing the 
+                    verifications on the client side saves processing resources of the server and uses up to date information available to Google. It may be that 
+                    this check takes somewhat more time to perform compared to usage of stale data by a fast server, but a user would appreciate knowing this check is performed 
+                    with most up to date data. An intentional delay is added to the client side redirect to allow the end user a chance to read a note about this safety 
+                    feature. This is for demo only and shall be removed in production.</li>
+                </ul>
+                <h3>Analysis / Todo List</h3>
+                <ul>
+                    <li><b>Replace memory cache with persistant database storage that would allow fast random access to data.</b> Given the assumption of 50 requests per second, 31536000 seconds per year,  
+                    assuming average of 400 bytes per long URL, planning for 10 years at least, that yields a requirement for ~7 TeraBytes storage. This requires 
+                    usage of a database on a distributed file system, such as Hadoop + HBase. HBase allows fast random lookup. Hosted on a machine cluster with distributed file system 
+                    it will allow endless amount of storage. The data, long URLs, will be persisted forever and concurrent access will be taken care of by the database. 
+                    With this implementation, an encoded value of the DB table's row index (row index of the persisted long URL) will serve as the URI of the minified URL and table's lookup value. </li>
+                    <li>Consider whether it is worth to check before persisting a long URL whether it is already in DB. in that case, no need to re-insert. However, at this time, I believe such a check 
+                    on each and every insert is not justified for, what I believe is more than likely only rare, re-entry of identical long URLs.</li>
+                </ul>
+                <h3>Code repository</h3>
+                <p>This project is hosted in a public repository on GitHub.</p>
+                <ul>
+                    <li>The FE Servlets code.</li>
+                    <li>The BE AngularJS code.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

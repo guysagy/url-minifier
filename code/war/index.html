@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+    <html lang="en" ng-app="miniUrl">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <title>Url minifier</title>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+        <!-- Bootstrap -->
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- CSS -->
+        <link rel="stylesheet" href="../libs/styles/normalize.css"/>
+        <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" href="./appstyles.css"/>
+        <!-- AngularJS -->
+        <!--  For development purposes, use non-minified versions -->
+        <script type="text/javascript" src="../libs/angular/angular.js"></script>
+        <script type="text/javascript" src="../libs/angular/angular-ui-router.js"></script>
+        <script type="text/javascript" src="../libs/angular/angular-sanitize.js"></script>
+        <!--  Application JS -->
+        <script type="text/javascript" src="../angular-app/safeRedirect/safeRedirect.module.js"></script>
+        <script type="text/javascript" src="../angular-app/safeRedirect/safeRedirect.component.js"></script>        
+        <script type="text/javascript" src="../angular-app/googleSafeBrowsingClient/googleSafeBrowsingClient.module.js"></script>
+        <script type="text/javascript" src="../angular-app/googleSafeBrowsingClient/googleSafeBrowsingClient.service.js"></script>
+        <script type="text/javascript" src="../angular-app/menuBar/menuBar.module.js"></script>
+        <script type="text/javascript" src="../angular-app/menuBar/menuBar.component.js"></script>
+        <script type="text/javascript" src="../angular-app/miniUrl/miniUrl.module.js"></script>
+        <script type="text/javascript" src="../angular-app/miniUrl/miniUrl.routes.js"></script>
+        <script type="text/javascript" src="../angular-app/miniUrl/miniUrl.service.js"></script>
+        <script type="text/javascript" src="../angular-app/miniUrl/miniUrl.component.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <url-minifier-main-menu-bar></url-minifier-main-menu-bar>
+            <ui-view></ui-view>
+        </div>
+    </body>
+</html>
