@@ -20,8 +20,8 @@ public class MminiUrlsStorge {
         try {
             longUrl = miniUrlsData.get(tableRowId);
         } catch (IndexOutOfBoundsException exception) {
-        	// Not really needed with this code structure, but for maintainability sake :
-        	longUrl = null; 
+            // Not really needed with this code structure, but for maintainability sake :
+            longUrl = null; 
         }
         return longUrl;
     }

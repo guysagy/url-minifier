@@ -2,21 +2,22 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="well">
-                <h3>Usage</h3>
-                <p>On the Home page, enter your long URL and hit the button to get your minified URL.
-                You need to prepend the protocol 'http://' or 'https://' to the URL. This 
-                allows for future support of other protocols without the server making assumptions
-                which protocol the resource is to be requested with.</p>
-                <h3>Assumptions</h3>
+
+                <h3>Usage:</h3>
+                <p>On the Home page, enter your long URL and hit the button to get your minified URL. The user need to prepend the protocol 'http://' or 'https://' to the URL. This 
+                allows for future support of other protocols without the server making assumptions which protocol the resource is to be requested with.</p>
+
+                <h3>Assumptions:</h3>
                 <ul>
                     <li>~50 requests per second are expected. This yields ~16*10^9 requests over planned 10 years of operation.</li>
                 </ul>
-                <h3>Implementation</h3>
+
+                <h3>Implementation:</h3>
                 <ul>
                     <li>Client front end implemented with JavaScript/AngularJS.</li>
                     <li>Application service back end implemented with Java/Servlets.</li>
                     <li>URLs are cached in memory using an ArrayList. An encoded value of the array index is used as the lookup value for the URL. 
-                    This is temporary solution due to time / cost constraints. A Todo item (see below) is to replace this cache with an HBase DB. </li>
+                    This is temporary solution due to time / cost constraints. A TODO item (please see below) is to replace this cache with an HBase DB.</li>
                     <li>Encoding algorithm selected is Base32 (see http://google.github.io/guava/releases/22.0-android/api/docs/). This yields easy human-readable output,  
                     and 32 possible characters in 8 character output support much more then the assumed number of requests stated above.</li>
                     <li>Safe browsing: <a href="https://developers.google.com/safe-browsing/v4/lookup-api" target="_blank">Google Safe Browsing Lookup API (v4)</a> 
@@ -29,7 +30,11 @@
                     with most up to date data. An intentional delay is added to the client side redirect to allow the end user a chance to read a note about this safety 
                     feature. This is for demo only and shall be removed in production.</li>
                 </ul>
-                <h3>Analysis / Todo List</h3>
+
+                <h3>Expected client-server interactions:</h3>
+                <p>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/docs/" target="_blank">document listing test cases covering client-server interactions</a>.</p>
+
+                <h3>Analysis and TODO List:</h3>
                 <ul>
                     <li><b>Replace memory cache with persistant database storage that would allow fast random access to data.</b> Given the assumption of 50 requests per second, 31536000 seconds per year,  
                     assuming average of 400 bytes per long URL, planning for 10 years at least, that yields a requirement for ~7 TeraBytes storage. This requires 
@@ -38,13 +43,16 @@
                     With this implementation, an encoded value of the DB table's row index (row index of the persisted long URL) will serve as the URI of the minified URL and table's lookup value. </li>
                     <li>Consider whether it is worth to check before persisting a long URL whether it is already in DB. in that case, no need to re-insert. However, at this time, I believe such a check 
                     on each and every insert is not justified for, what I believe is more than likely only rare, re-entry of identical long URLs.</li>
+                    <li>Implement a 'Copy To Clipboard' button next to the minfied URL...</li>
                 </ul>
-                <h3>Code repository</h3>
-                <p>This project is hosted in a public repository on GitHub.</p>
+
+                <h3>Code repository:</h3>
+                <p>This <a href="https://github.com/guysagy/url-minifier" target="_blank">project is hosted in a public repository on GitHub</a>.</p>
                 <ul>
-                    <li>The FE Servlets code.</li>
-                    <li>The BE AngularJS code.</li>
+                    <li>The <a href="https://github.com/guysagy/url-minifier/tree/master/code/war/angular-app" target="_blank">FE AngularJS code</a>.</li>
+                    <li>The <a href="https://github.com/guysagy/url-minifier/tree/master/code/src/com/guysagy/miniurl" target="_blank">BE Servlets code</a>.</li>
                 </ul>
+
             </div>
         </div>
     </div>

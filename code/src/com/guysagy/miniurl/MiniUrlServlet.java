@@ -65,25 +65,25 @@ public class MiniUrlServlet extends HttpServlet {
             }
 
             if (longUrl == null || longUrl.length() == 0) {
-            	destination = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
+                destination = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
             } else if (client != null && client.equals("minifyApp")) {
-            	// client='minifyApp' is a NV pair identifying when the client is the Home page of this web app. 
-            	// In this case, when redirecting to the long url destination, there is no need to repeat the 
-            	// Safe Browsing check (it was already done when generating the minfied URL), 
-            	// and we can redirect directly to the destination web site. 
-            	destination = longUrl;
+                // client='minifyApp' is a NV pair identifying when the client is the Home page of this web app.
+                // In this case, when redirecting to the long url destination, there is no need to repeat the
+                // Safe Browsing check (it was already done when generating the minfied URL),
+                // and we can redirect directly to the destination web site.
+                destination = longUrl;
             } else {
-            	String urlEncoded = URLEncoder.encode(longUrl, "UTF-8");
-            	destination = BuildServerHttpLocation(req) + "index.html#!/safeRedirect?destination=" + urlEncoded;
+                String urlEncoded = URLEncoder.encode(longUrl, "UTF-8");
+                destination = BuildServerHttpLocation(req) + "index.html#!/safeRedirect?destination=" + urlEncoded;
             }
 
             if (isDebugMode) {
-            	System.out.println("Retreived (minifiedUrl, longUrl) : (" + req.getRequestURL() + ", " + longUrl + ")");
+                System.out.println("Retreived (minifiedUrl, longUrl) : (" + req.getRequestURL() + ", " + longUrl + ")");
             }
 
         } catch (Exception exception) {
 
-        	destination = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
+            destination = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
         }
 
         resp.sendRedirect(destination);
@@ -109,18 +109,18 @@ public class MiniUrlServlet extends HttpServlet {
             // Input validation:
             ValidationResult validationResult = validateLongUrl(longUrl);
             if (validationResult.isValid) {
-            	/*
-            	 * TODO: consider checking if the longUrl is already in DB. in that case, no need to re-insert. 
-            	 * However, at this time, I believe such a check on each and every insert is not justified 
-            	 * for, what I believe is more than likely only non-often, re-entry of identical longUrl's.
-            	 */
+                /*
+                 * TODO: consider checking if the longUrl is already in DB. in that case, no need to re-insert.
+                 * However, at this time, I believe such a check on each and every insert is not justified
+                 * for, what I believe is more than likely only non-often, re-entry of identical longUrl's.
+                 */
                 Integer minifiedUrlRowId = miniUrlsStorge.insertUrl(longUrl);
                 String minifiedUrlCode = BaseEncoding.base32().encode(minifiedUrlRowId.toString().getBytes(Charsets.US_ASCII));
                 minifiedUrl = BuildServerHttpLocation(req) + minifiedUrlCode;
-            	// Given the current code structure, this cannot happen, 
-            	// but for maintainability sake :
+                // Given the current code structure, this cannot happen,
+                // but for maintainability sake :
                 if (minifiedUrl.length() == 0) {
-                	errorString = "Ouch. URL minification failed due to an unexpected server error. Please try again.";
+                    errorString = "Ouch. URL minification failed due to an unexpected server error. Please try again.";
                 }
             } else {
                 errorString = "Ouch. URL minification failed: " + validationResult.reason;
@@ -155,7 +155,7 @@ public class MiniUrlServlet extends HttpServlet {
         if (longUrl.length() > maxAllowedCharacters) {
             validationResult.isValid = false;
             validationResult.reason = "URL exceeds max allowed characters.";
-        } else if (Pattern.matches("\\S*<\\s*(script|link)\\s*>\\S*", longUrl)) {
+        } else if (Pattern.matches("(?i)\\S*<\\s*(script|/script|link|/link)\\s*>\\S*", longUrl)) {
             validationResult.isValid = false;
             validationResult.reason = "URL contains disallowed scripting.";
         }
