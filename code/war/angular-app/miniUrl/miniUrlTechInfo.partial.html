@@ -4,7 +4,7 @@
             <div class="well">
 
                 <h3>Usage:</h3>
-                <p>On the Home page, enter your long URL and hit the button to get your minified URL. The user need to prepend the protocol 'http://' or 'https://' to the URL. This 
+                <p>On the Home page, enter your long URL and hit the button to get your minified URL. The user shall prepend the protocol 'http://' or 'https://' to the URL. This 
                 allows for future support of other protocols without the server making assumptions which protocol the resource is to be requested with.</p>
 
                 <h3>Assumptions:</h3>
@@ -40,17 +40,17 @@
                     assuming average of 400 bytes per long URL, planning for 10 years at least, that yields a requirement for ~7 TeraBytes storage. This requires 
                     usage of a database on a distributed file system, such as Hadoop + HBase. HBase allows fast random lookup. Hosted on a machine cluster with distributed file system 
                     it will allow endless amount of storage. The data, long URLs, will be persisted forever and concurrent access will be taken care of by the database. 
-                    With this implementation, an encoded value of the DB table's row index (row index of the persisted long URL) will serve as the URI of the minified URL and table's lookup value. </li>
+                    With this implementation, an encoded value of the DB table's row index (row index of the persisted long URL) will serve as the URI of the minified URL and table's lookup value 
+                    (URI vs. URL per definition <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getRequestURI()" target="_blank">here</a> ...). </li>
                     <li>Consider whether it is worth to check before persisting a long URL whether it is already in DB. in that case, no need to re-insert. However, at this time, I believe such a check 
                     on each and every insert is not justified for, what I believe is more than likely only rare, re-entry of identical long URLs.</li>
-                    <li>Implement a 'Copy To Clipboard' button next to the minfied URL...</li>
                 </ul>
 
                 <h3>Code repository:</h3>
                 <p>This <a href="https://github.com/guysagy/url-minifier" target="_blank">project is hosted in a public repository on GitHub</a>.</p>
                 <ul>
-                    <li>The <a href="https://github.com/guysagy/url-minifier/tree/master/code/war/angular-app" target="_blank">FE AngularJS code</a>.</li>
-                    <li>The <a href="https://github.com/guysagy/url-minifier/tree/master/code/src/com/guysagy/miniurl" target="_blank">BE Servlets code</a>.</li>
+                    <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/war/angular-app" target="_blank">FE AngularJS code</a>.</li>
+                    <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/src/com/guysagy/miniurl" target="_blank">BE Servlets code</a>.</li>
                 </ul>
 
             </div>
