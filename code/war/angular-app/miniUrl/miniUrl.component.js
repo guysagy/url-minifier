@@ -41,7 +41,7 @@
                                             && typeof minifyResult.minifiedUrl == 'string' && minifyResult.minifiedUrl.length != 0) ? true : false ;
                         if (showMiniUrl === true) {
                                 miniUrlCtrl.errorString = "";
-                                miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" >" + minifyResult.minifiedUrl + "</a>";
+                                miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
                         } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
                             miniUrlCtrl.errorString = minifyResult.errorString;
                             miniUrlCtrl.miniUrl = "";
