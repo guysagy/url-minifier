@@ -13,7 +13,7 @@
             url : '/miniUrlNotFound',
             templateUrl : './angular-app/miniUrl/miniUrlNotFound.partial.html'
         }).state('safeRedirect', {
-        	url : '/safeRedirect',
+            url : '/safeRedirect',
             template : '<safe-redirect></safe-redirect>'
         });
     }
