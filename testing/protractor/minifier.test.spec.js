@@ -2,52 +2,100 @@
 
 var MinifierHomepage = function() {
 
-    var longUrlTextArea = element(by.model('miniUrlCtrl.longUrl'));
-    var longUrlSubmitBtn = element(by.id('longUrlSubmitBtn'));
-    var minifiedUrlSpan = element(by.css('.minifiedUrlSpan'));
+    var This = this;
+    This.longUrlTextArea  = element(by.model('miniUrlCtrl.longUrl'));
+    This.longUrlSubmitBtn = element(by.id('longUrlSubmitBtn'));
+    This.minifiedUrlSpan  = element(by.css('.minifiedUrlSpan'));
 
-    this.load = function(url) {
+    This.load = function(url) {
         browser.get(url);
     };
 
-    this.setLongUrl = function(value) {
-        longUrlTextArea.sendKeys(value);
+    This.setLongUrl = function(value) {
+        This.longUrlTextArea.sendKeys(value);
     };
 
-    this.getLongUrl = function() {
-        return longUrlTextArea.getAttribute('value');
+    This.getLongUrl = function() {
+        return This.longUrlTextArea.getAttribute('value');
     };
 
-    this.submitLongUrl = function() {
-        longUrlSubmitBtn.click();
+    This.submitLongUrl = function() {
+        This.longUrlSubmitBtn.click();
     };
 
-    this.getMinifiedUrl = function() {
-        return minifiedUrlSpan.getText();
+    This.clearLongUrl = function() {
+        This.longUrlSubmitBtn.clear();
+    };
+
+    This.getMinifiedUrl = function() {
+        return This.minifiedUrlSpan.getText();
     };
 };
 
 describe('minifier homepage', function() {
 
-    var minifierHomepage = null;
-    //var minifierWebAppUrl = 'http://1-dot-miniurl-1.appspot.com/';
-    var minifierWebAppUrl = 'http://localhost:8888/';
-    var longUrl = "http://www.cnn.com/";
+    var minifierHomepage                    = null;
+    var productionMminifierWebAppUrl        = "http://1-dot-miniurl-1.appspot.com/";
+    var localhostMinifierWebAppUrl          = "http://localhost:8888/";
+    var validLongUrl                        = "http://www.cnn.com/";
+    var inValidLongUrl                      = "http://www.cnn.com/ with spaces";
+    var maliciousLongUrl                    = "http://malware.testing.google.test/testing/malware/";
+    var minifierAppTitle                    = "Url Minifier";
+    var oldMinifierAppTitle                 = "Url minifier";
 
     beforeEach(function(){
         minifierHomepage = new MinifierHomepage();
-        minifierHomepage.load(minifierWebAppUrl);
+        minifierHomepage.load(localhostMinifierWebAppUrl);
     });
 
-    it('set long url correctly', function() {
-        minifierHomepage.setLongUrl(longUrl);
-        expect(minifierHomepage.getLongUrl()).toEqual(longUrl);
+    it('title verified to be ' + minifierAppTitle, function() {
+        expect(browser.getTitle()).toEqual(minifierAppTitle);
     });
 
-    it('got correct minified url', function() {
-        minifierHomepage.setLongUrl(longUrl);
+    it('longUrlSubmitBtn is disabled when first accessed', function() {
+        expect(minifierHomepage.longUrlSubmitBtn.isEnabled()).toBe(false);        
+    });
+
+    it('longUrlSubmitBtn is enabled upon valid URL entry', function() {
+        minifierHomepage.setLongUrl(validLongUrl);
+        expect(minifierHomepage.longUrlSubmitBtn.isEnabled()).toBe(true);        
+    });
+
+    it('longUrlSubmitBtn is disabled upon invalid URL entry', function() {
+        minifierHomepage.setLongUrl(inValidLongUrl);
+        expect(minifierHomepage.longUrlSubmitBtn.isEnabled()).toBe(false);        
+    });
+
+    it('exchanged a valid long URL for a minified URL successfully', function() {
+        minifierHomepage.setLongUrl(validLongUrl);
         minifierHomepage.submitLongUrl();
-        expect(minifierHomepage.getMinifiedUrl()).toContain(minifierWebAppUrl);
+        // TODO: Need to augment with testing for only base 32 characters in URI.
+        expect(minifierHomepage.getMinifiedUrl()).toContain(localhostMinifierWebAppUrl);
+    });
+  
+    it('launching a minified URL redirects to correct URL', function() {
+        minifierHomepage.setLongUrl(productionMminifierWebAppUrl);
+        minifierHomepage.submitLongUrl();
+        minifierHomepage.getMinifiedUrl().then(function(minifiedUrl){
+            browser.get(minifiedUrl);
+            // TODO: replace old with current after next production deployment ...
+            expect(browser.getTitle()).toEqual(oldMinifierAppTitle); 
+        });
     });
 
+    it('shows no error string initially', function() {
+        expect(element(by.binding('miniUrlCtrl.errorString')).isPresent()).toBe(false);
+    });
+
+    it('shows an error string when submittng a malicious URL', function() {
+        minifierHomepage.setLongUrl(maliciousLongUrl);
+        minifierHomepage.submitLongUrl();
+        expect(element(by.binding('miniUrlCtrl.errorString')).isPresent()).toBe(true);
+    });
+
+    it('shows the correct error string when submittng a malicious URL', function() {
+        minifierHomepage.setLongUrl(maliciousLongUrl);
+        minifierHomepage.submitLongUrl();
+        expect(element(by.binding('miniUrlCtrl.errorString')).getText()).toContain("Your url is flagged by our systems as an online threat");
+    });
 });
