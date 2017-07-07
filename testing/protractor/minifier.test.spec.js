@@ -40,8 +40,7 @@ describe('minifier homepage', function() {
     var validLongUrl                        = "http://www.cnn.com/";
     var inValidLongUrl                      = "http://www.cnn.com/ with spaces";
     var maliciousLongUrl                    = "http://malware.testing.google.test/testing/malware/";
-    var minifierAppTitle                    = "Url Minifier";
-    var oldMinifierAppTitle                 = "Url minifier";
+    var minifierAppTitle                    = "URL Minifier";
 
     beforeEach(function(){
         minifierHomepage = new MinifierHomepage();
@@ -78,8 +77,7 @@ describe('minifier homepage', function() {
         minifierHomepage.submitLongUrl();
         minifierHomepage.getMinifiedUrl().then(function(minifiedUrl){
             browser.get(minifiedUrl);
-            // TODO: replace old with current after next production deployment ...
-            expect(browser.getTitle()).toEqual(oldMinifierAppTitle); 
+            expect(browser.getTitle()).toEqual(minifierAppTitle); 
         });
     });
 

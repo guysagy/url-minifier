@@ -1,13 +1,26 @@
-describe("Testing auth module - ", function() {
+describe("Testing module googleSafeBrowsingClient", function() {
+
+    // Work in progress, tests do not yet work !!!
+
+    var googleSafeBrowsingService = null;
 
     beforeEach(function() {
-        //module('auth');
-        //inject(function($injector) {
-        //    authService = $injector.get('authService');
-        //});
+        module('googleSafeBrowsingClient');
+        inject(function($injector) {
+            googleSafeBrowsingService = $injector.get('googleSafeBrowsingService');
+        });
+
     });
 
-    it("dummy", function() {
+    it("malicious URL is flagged", function() {
+        var maliciousURL = "http://malware.testing.google.test/testing/malware/";
+        var promiseResult = googleSafeBrowsingService.isSafeUrl(maliciousURL);
+    });
+
+    it("safe URL is cleared", function() {
+        var safeURL = "http://www.cnn.com/";
+        var promiseResult = googleSafeBrowsingService.isSafeUrl(safeURL);
     });
 
 });
+

@@ -8,8 +8,8 @@
                     <div class="form-group">
                         <div ng-class="{'has-error': miniUrlCtrl.isFieldInErrorState('longUrl')}">
                             <textarea name="longUrl" id="longUrlTextArea" class="form-control" ng-model="miniUrlCtrl.longUrl" rows="15" style="resize:vertical" 
-                            	placeholder="Enter a valid URL (no whitespaces, prepended 'http(s)://'), e.g. http://www.debka.co.il, the author's favorite web  site." 
-                            	ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" required>
+                                placeholder="Enter a valid URL (no whitespaces, prepended 'http(s)://'), e.g. http://www.debka.co.il, the author's favorite web  site." 
+                                ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" required>
                             </textarea>
                             <span id="validUrlErrorSpan" ng-show="miniUrlCtrl.isFieldInErrorState('longUrl')" class="help-block">A valid URL is required (no whitespaces, prepended 'http(s)://').</span>
                         </div>

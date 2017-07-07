@@ -9,54 +9,53 @@
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/war/angular-app" target="_blank">FE AngularJS code</a>.</li>
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/src/com/guysagy/miniurl" target="_blank">BE Servlets code</a>.</li>
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/docs/" target="_blank">test cases listing in detail expected client-server interactions</a>.</li>
+                    <li>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/testing/" target="_blank">unit (Jasmine) and end-to-end (Protractor) test scripts
+                    (note: Jasmine tests are <i>really</i> work in progress...)</a>.</li>
                 </ul>
 
-                <h3>Usage:</h3>
-                <p>Enter your long URL and click the button to get your URL Minified. Note that the user is required to enter the protocol - 'http://' or 'https://'. 
+                <h3>App Usage:</h3>
+                <p>Enter your long URL and click the button to get your URL Minified. Note that the user is required to enter the protocol - 'http://' or 'https://'.
 
                 <h3>Assumptions:</h3>
                 <ul>
                     <li>Expecting ~50 requests per second.</li>
                     <li>Average of 400 bytes per long URL.</li>
-                    <li>At least 10 years of operation.</li>
+                    <li>Minimum of 10 years of operation.</li>
                 </ul>
 
                 <h3>Implementation:</h3>
                 <ul>
-                    <li>Client front end implemented with JavaScript/AngularJS.</li>
+                    <li>Client front end implemented with JavaScript/AngularJS as an SPA.</li>
                     <li>Application service back end implemented with Java/Servlets.</li>
-                    <li>URLs are cached in memory using an ArrayList. An encoded value of the array index is used as the lookup value for the URL. This is temporary solution due to time / cost constraints.</li>
-                    <li>Encoding algorithm selected is Base32. This yields easy human-readable output (see http://google.github.io/guava/releases/22.0-android/api/docs/).</li>
-                    <li>Safe Browsing: <a href="https://developers.google.com/safe-browsing/v4/lookup-api" target="_blank">Google Safe Browsing Lookup API (v4)</a> 
-                    is used to test submitted URLs to verify they do not point to malicious web sites. The check is performed twice, on the <b>client</b> side: 
-                    (i) when the user submits the long URL for minification, and (ii) when the user attempts to navigate to the URL. 
-                    The initial check may be overcome by a malicious user (by performing a direct HTTP request [i.e., not via the Home page], or by generating a fresh  
-                    domain name unknown to the API). The second check by the end user will test the destination URL with most up to date information.</li>
+                    <li>URLs are cached in memory using an ArrayList. This is a temporary solution due to time / cost constraints (see TODO list for future plans on this).</li>
+                    <li>Encoding algorithm selected is Base32. This yields easy-human-readable output (see <a href="http://google.github.io/guava/releases/22.0-android/api/docs/" target="_blank">here</a>).</li>
+                    <li>Safe Browsing: <a href="https://developers.google.com/safe-browsing/v4/lookup-api" target="_blank">Google Safe Browsing Lookup API (v4)</a>
+                    is used to test submitted URLs to verify they do not point to malicious web sites. The check is performed twice, on the <b>client</b> side:
+                    (i) when the user submits the long URL for minification, and (ii) when the user attempts to navigate to the URL.
+                    The initial check may be overcome by a malicious user (by performing a direct HTTP request [i.e., not via the Home page], or by generating a fresh
+                    domain name unknown to the API). The second check by the end user will test the destination URL with the most up to date information.</li>
                 </ul>
 
                 <h3>Analysis:</h3>
                 <ul>
-                    <li>Requiring the user to input the protocol allows for future support of other protocols without the server making assumptions which protocol the 
+                    <li>Requiring the user to input the protocol allows for future support of other protocols without the server making assumptions which protocol the
                     resource is to be requested with.</li>
-                    <li>50 requests per second, 31536000 seconds per year, yields ~16*10^9 expected requests over 10 years of operation. The Base 32 Guava implementation encoding outputs 32 possible characters in 8 character output which support 32^8 requests, which are much more then 
-                    the expected number of requests. This implementation is sufficient for us.</li>
-                    <li>50 requests per second, 31536000 seconds per year, average of 400 bytes per long URL, 10 years at least, yields a requirement for ~7 Terabytes storage at least. 
-                    This requires usage of a database on a distributed file system, such as Hadoop + HBase. HBase allows fast random lookup. Hosted on a machine cluster with distributed file system 
-                    it will allow endless amount of storage. Concurrent access will be taken care of by the database. An encoded value of the DB table's row index (row index of the persisted long URL) will serve as the URI of the minified URL and table's lookup value 
-                    (URI vs. URL per definition <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getRequestURI()" target="_blank">here</a> ...). </li>
-                    <li>Performing Safe Browsing verifications on the client side saves processing resources of the server and uses up to date information available to Google. It may be that 
-                    this check takes somewhat more time to perform compared to usage of stale data by a fast server, but a user would appreciate knowing this check is performed 
-                    with most up to date data.</li>
+                    <li>50 requests per second, 31536000 seconds per year, average of 400 bytes per long URL, minimum of 10 years, means a requirement for ~7 Terabytes storage at least.
+                    This requires usage of a database on a distributed file system, such as Hadoop + HBase. HBase allows fast random lookup. Hosted on a Hadoop machine cluster with distributed file system
+                    it will allow endless amount of storage. Concurrent access will be taken care of by the database. An encoded value of the DB table's row index (row index of the persisted long URL)
+                    will serve as the resource portion of the minified URL. This will also obfuscate the minified URL by making it non-sequantial.</li>
+                    <li>Performing Safe Browsing verifications on the client side saves processing resources of the server and uses up to date information available to Google. It may be that
+                    this check takes somewhat more time to perform compared to usage of stale data by a fast server, but a user would appreciate knowing this check is performed with most up to date data.</li>
                 </ul>
-                
+
                 <h3>TODO List:</h3>
                 <ul>
-                	<li>Replace memory cache with persistant storage to HBase on Hadoop cluster.</li>
-                    <li>Add a 'Copy To Clipboard' button for the  minified URL (ex. impl. - https://gist.github.com/JustMaier/6ef7788709d675bd8230)</li>
-                    <li>Trailing '=' characters in minified URLs are not needed. These may be removed from display. However, this needs to be tested and verified thoroughly.</li>
-                    <li>Consider whether it is worth to check before persisting a long URL whether it is already in DB. In that case, no need to re-insert. However, at this time, I believe such a check 
-                    on each and every insert is not justified for, what I believe is more than likely only rare, re-entry of identical long URLs.</li>
-                    <li>After the Safe Browsing check, an intentional delay is added to the client side redirect to allow the end user a chance to read a note about this safety 
+                    <li>Replace memory cache with persistant storage to <b>HBase on Hadoop</b> cluster.</li>
+                    <li>Add a <b>'Copy To Clipboard' button</b> for the  minified URL. Example implementation <a href="https://gist.github.com/JustMaier/6ef7788709d675bd8230" target="_blank">here</a>.</li>
+                    <li><b>Trailing '=' characters</b> in minified URLs are not needed. They are padding to 8 character boundary for visual pusposes only that may be discarded when using. Need to verify and test this.</li>
+                    <li>Consider whether it is worth to check before persisting a long URL if it is already in DB. In that case, no need to re-insert. However, at this time, I believe such a check
+                    on each and every insert is not justified for what I believe is more than likely only rare re-entry of identical long URLs.</li>
+                    <li>After the Safe Browsing check, an <b>intentional delay</b> is added to the client side redirect to allow the end user a chance to read a note about this safety
                     feature. This is for demo only and shall be removed in production.</li>
                 </ul>
 
