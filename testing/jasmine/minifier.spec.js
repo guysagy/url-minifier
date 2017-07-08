@@ -47,7 +47,7 @@ describe("googleSafeBrowsingClient", function() {
 
     });
 
-    it("reports a safe URL as safe URL ...", function() {
+    it("reports a safe URL as a safe URL ...", function() {
 
         var safeURL = "http://www.cnn.com/";
         var requestBody = {

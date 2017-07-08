@@ -2,7 +2,7 @@
     'use strict';
 
 	var safeRedirectDdo = {
-		controller	 : 'safeRedirectController',
+		controller   : 'safeRedirectController',
 		controllerAs : 'safeRedirectCtrl',
 		templateUrl  : './angular-app/safeRedirect/safeRedirect.partial.html',
 		$inject      : ['$location', '$window', '$timeout', 'googleSafeBrowsingService'],
