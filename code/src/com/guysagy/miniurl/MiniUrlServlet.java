@@ -79,17 +79,17 @@ public class MiniUrlServlet extends HttpServlet {
             }
 
             if (longUrl == null || longUrl.length() == 0) {
-            	// Url not found, or is found to be invalid.
-            	// TODO: rename the web app state below to reflect this. 
-            	redirectTo = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
+                // Url not found, or is found to be invalid.
+                // TODO: rename the web app state below to reflect this. 
+                redirectTo = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
             } else if (client != null && client.equals("minifyApp")) {
                 // client='minifyApp' is a NV pair identifying when the client is the Home page of this web app.
                 // In this case, when redirecting to the long url destination, there is no need to repeat the
                 // Safe Browsing check (it was already done when generating the minfied URL),
                 // and we can redirect directly to the destination web site.
-            	redirectTo = longUrl;
+                redirectTo = longUrl;
             } else {
-            	// Notify the client to first check the URL it is not malicious, and only then redirect there. 
+                // Notify the client to first check the URL it is not malicious, and only then redirect there. 
                 String urlEncoded = URLEncoder.encode(longUrl, "UTF-8");
                 redirectTo = BuildServerHttpLocation(req) + "index.html#!/safeRedirect?destination=" + urlEncoded;
             }
@@ -112,11 +112,13 @@ public class MiniUrlServlet extends HttpServlet {
     // Service response data is in JSON format.
     // Response contains both 'errorString' and 'minifiedUrl' string parameters.
     // In a response, one and only one of 'errorString' and 'minifiedUrl' is non-zero length.
+    // The context, longUrl, is always reflected back.
     // 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String errorString = "";
         String minifiedUrl = "";
+        String longUrl     = "";
 
         try {
 
@@ -124,7 +126,7 @@ public class MiniUrlServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             Gson gsonIn = new Gson();
             MinifyUrlData minifyUrlData = gsonIn.fromJson(reader, MinifyUrlData.class);
-            String longUrl = minifyUrlData.getLongUrl().trim();
+            longUrl = minifyUrlData.getLongUrl().trim();
 
             // Input validation:
             ValidationResult validationResult = validateLongUrl(longUrl);
@@ -138,6 +140,8 @@ public class MiniUrlServlet extends HttpServlet {
 
                 // http://google.github.io/guava/releases/22.0-android/api/docs/
                 String minifiedUrlCode = BaseEncoding.base32().encode(minifiedUrlRowId.toString().getBytes(Charsets.US_ASCII));
+                // Encoding pads output with "=" characters to 8 character boundary. These are not needed, remove them:
+                minifiedUrlCode = minifiedUrlCode.replaceAll("=", "");
                 minifiedUrl = BuildServerHttpLocation(req) + minifiedUrlCode;
 
                 // Given the current code structure, this cannot happen, but for maintainability sake :
@@ -163,6 +167,7 @@ public class MiniUrlServlet extends HttpServlet {
         JsonObject outJsonData = new JsonObject();
         outJsonData.addProperty("errorString", errorString);
         outJsonData.addProperty("minifiedUrl", minifiedUrl);
+        outJsonData.addProperty("longUrl",     longUrl);
 
         resp.setContentType("application/json");
         resp.getWriter().write(outJsonData.toString());

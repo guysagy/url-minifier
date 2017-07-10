@@ -19,7 +19,7 @@
             miniUrlCtrl.dataLoading = true;
 
             // Technically, $q service may handle the two operations in parallel, but we need them to be performed sequentially
-            // (otherwise, the URLs will be handled by the backend even if it turns out that it is not safe). 
+            // (otherwise, the URLs will be handled by the backend even if it turns out that it is not safe).
             $q.all([googleSafeBrowsingService.isSafeUrl(miniUrlCtrl.longUrl)])
             .then( function success(allResponses) {
 
@@ -35,20 +35,25 @@
                     $q.all([miniUrlService.minifyUrl(miniUrlCtrl.longUrl)])
                     .then( function success(allResponses) {
                         var minifyResult = allResponses[0].data;
-                        // It is the service promise that response data will include always include 'errorString' and 'miniUrl',
-                        // and at all times only one will be non-zero length.
-                        var showMiniUrl = (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length == 0
-                                            && typeof minifyResult.minifiedUrl == 'string' && minifyResult.minifiedUrl.length != 0) ? true : false ;
-                        if (showMiniUrl === true) {
-                                miniUrlCtrl.errorString = "";
-                                // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
-                                // The character '=' is used for padding, but can be omitted or replaced.
-                                minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
-                                miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
-                        } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
-                            miniUrlCtrl.errorString = minifyResult.errorString;
-                            miniUrlCtrl.miniUrl = "";
-                        } 
+                        if (minifyResult.longUrl != miniUrlCtrl.longUrl) {
+                            miniUrlCtrl.errorString = "Ouch. A server or network error has occured. Please try again.";
+                        }
+                        else {
+                            // It is the service promise that response data will include always include 'errorString' and 'miniUrl',
+                            // and at all times only one will be non-zero length.
+                            var showMiniUrl = (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length == 0
+                                                && typeof minifyResult.minifiedUrl == 'string' && minifyResult.minifiedUrl.length != 0) ? true : false ;
+                            if (showMiniUrl === true) {
+                                    miniUrlCtrl.errorString = "";
+                                    // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
+                                    // The character '=' is used for padding, but can be omitted or replaced.
+                                    minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
+                                    miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
+                            } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
+                                miniUrlCtrl.errorString = minifyResult.errorString;
+                                miniUrlCtrl.miniUrl = "";
+                            }
+                        }
                         miniUrlCtrl.dataLoading = false;
                     })
                     .catch( function failure(error) {

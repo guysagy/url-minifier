@@ -40,7 +40,7 @@ describe("googleSafeBrowsingClient", function() {
         var googleSafeBrowsingRequestData = getGoogleSafeBrowsingRequestBody(maliciousURL);
 
         // For response structure, look @ https://developers.google.com/safe-browsing/v4/lookup-api
-        $httpBackend.expectPOST(googleSafeBrowsingApiUrl , googleSafeBrowsingRequestData)
+        $httpBackend.expectPOST(googleSafeBrowsingApiUrl, googleSafeBrowsingRequestData)
             .respond({matches:[{threat:{url:maliciousURL}}]});
         var retPromise = googleSafeBrowsingService.isSafeUrl(maliciousURL);
         retPromise.then(function(response) {
@@ -56,7 +56,7 @@ describe("googleSafeBrowsingClient", function() {
 
         var safeURL = "http://www.cnn.com/";
         var googleSafeBrowsingRequestData = getGoogleSafeBrowsingRequestBody(safeURL);
-        $httpBackend.expectPOST(googleSafeBrowsingApiUrl , googleSafeBrowsingRequestData).respond("{}");
+        $httpBackend.expectPOST(googleSafeBrowsingApiUrl, googleSafeBrowsingRequestData).respond("{}");
         var retPromise = googleSafeBrowsingService.isSafeUrl(safeURL);
         retPromise.then(function(response) {
             expect(response.url).toBe(safeURL);

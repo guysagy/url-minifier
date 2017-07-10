@@ -9,8 +9,7 @@
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/war/angular-app" target="_blank">FE AngularJS code</a>.</li>
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/tree/master/code/src/com/guysagy/miniurl" target="_blank">BE Servlets code</a>.</li>
                     <li>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/docs/" target="_blank">test cases listing in detail expected client-server interactions</a>.</li>
-                    <li>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/testing/" target="_blank">unit (Jasmine) and end-to-end (Protractor) test scripts
-                    (note: Jasmine tests are <i>really</i> work in progress...)</a>.</li>
+                    <li>Link to <a href="https://github.com/guysagy/url-minifier/blob/master/testing/" target="_blank">unit (Jasmine) and end-to-end (Protractor) test scripts.</a></li>
                 </ul>
 
                 <h3>App Usage:</h3>
@@ -52,7 +51,6 @@
                 <ul>
                     <li>Replace memory cache with persistant storage to <b>HBase on Hadoop</b> cluster.</li>
                     <li>Add a <b>'Copy To Clipboard' button</b> for the  minified URL. Example implementation <a href="https://gist.github.com/JustMaier/6ef7788709d675bd8230" target="_blank">here</a>.</li>
-                    <li><b>Trailing '=' characters</b> in minified URLs are not needed. They are padding to 8 character boundary for visual pusposes only that may be discarded when using. Need to verify and test this.</li>
                     <li>Consider whether it is worth to check before persisting a long URL if it is already in DB. In that case, no need to re-insert. However, at this time, I believe such a check
                     on each and every insert is not justified for what I believe is more than likely only rare re-entry of identical long URLs.</li>
                     <li>After the Safe Browsing check, an <b>intentional delay</b> is added to the client side redirect to allow the end user a chance to read a note about this safety
