@@ -44,11 +44,11 @@
                             var showMiniUrl = (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length == 0
                                                 && typeof minifyResult.minifiedUrl == 'string' && minifyResult.minifiedUrl.length != 0) ? true : false ;
                             if (showMiniUrl === true) {
-                                    miniUrlCtrl.errorString = "";
-                                    // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
-                                    // The character '=' is used for padding, but can be omitted or replaced.
-                                    minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
-                                    miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
+                                miniUrlCtrl.errorString = "";
+                                // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
+                                // The character '=' is used for padding, but can be omitted or replaced.
+                                minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
+                                miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
                             } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
                                 miniUrlCtrl.errorString = minifyResult.errorString;
                                 miniUrlCtrl.miniUrl = "";
