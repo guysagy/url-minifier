@@ -27,7 +27,7 @@
                 safeRedirectCtrl.notSafe = true;
             }
         }, function failure(error) {
-            safeRedirectCtrl.networkError = true
+            safeRedirectCtrl.networkError = true;
         });
 
     }
