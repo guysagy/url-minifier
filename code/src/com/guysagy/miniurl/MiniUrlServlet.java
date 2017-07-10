@@ -100,7 +100,7 @@ public class MiniUrlServlet extends HttpServlet {
 
         } catch (Exception exception) {
 
-        	redirectTo = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
+            redirectTo = BuildServerHttpLocation(req) + "index.html#!/miniUrlNotFound";
         }
 
         resp.sendRedirect(redirectTo);

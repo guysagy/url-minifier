@@ -23,8 +23,8 @@
             $q.all([googleSafeBrowsingService.isSafeUrl(miniUrlCtrl.longUrl)])
             .then( function success(allResponses) {
 
-                var safeResult = allResponses[0].data;
-                if (safeResult.matches != undefined) {
+                var safeResult = allResponses[0];
+                if (safeResult.isSafe === false) {
 
                     miniUrlCtrl.errorString = "Ouch. Your url is flagged by our systems as an online threat and therefore cannot be minified.";
                     miniUrlCtrl.miniUrl = "";
@@ -41,6 +41,9 @@
                                             && typeof minifyResult.minifiedUrl == 'string' && minifyResult.minifiedUrl.length != 0) ? true : false ;
                         if (showMiniUrl === true) {
                                 miniUrlCtrl.errorString = "";
+                                // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
+                                // The character '=' is used for padding, but can be omitted or replaced.
+                                minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
                                 miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
                         } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
                             miniUrlCtrl.errorString = minifyResult.errorString;

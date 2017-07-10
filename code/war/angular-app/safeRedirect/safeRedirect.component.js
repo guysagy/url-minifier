@@ -17,14 +17,18 @@
         var destination = $location.search().destination;
         googleSafeBrowsingService.isSafeUrl(destination)
         .then(function success(response) {
-            if (response.data.matches == undefined) {
+            if (response.url == destination && response.isSafe === true) {
                 // Delay the final redirection to allow the fast-reader end user a chance to read
                 // the notification on the UI.
                 $timeout(function() {
                     $window.open(destination, "_self");
                 }, 300);
-            } else {
+            } else if (response.url == destination && response.isSafe === false) {
                 safeRedirectCtrl.notSafe = true;
+            } else /* if (response.data.url != destination) */ {
+            	// This should never happen.
+            	safeRedirectCtrl.networkError = true;
+            	console.log("Unexpected error happened: reply from googleSafeBrowsingService does not match the requested targetUrl.");
             }
         }, function failure(error) {
             safeRedirectCtrl.networkError = true;

@@ -32,7 +32,16 @@
             };
 
             var data = JSON.stringify(requestBody);
-            return $http.post(googleSafeBrowsingApiUrl, data);
+
+            /* https://developers.google.com/safe-browsing/v4/lookup-api :
+             * If there are no matches (that is, if none of the URLs specified in the request are found on any of the lists specified in a request), 
+             * the HTTP POST response simply returns an empty object in the response body.
+             */
+            return $http.post(googleSafeBrowsingApiUrl, data).then(function success(response){
+            	 var isSafe = (response.data.matches === undefined) ? true : false ;
+          		 var url = (isSafe === true) ? targetUrl : response.data.matches[0].threat.url;
+            	 return {url: url, isSafe: isSafe};
+            });
         };
 
     }
