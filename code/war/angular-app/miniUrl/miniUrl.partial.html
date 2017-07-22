@@ -23,12 +23,14 @@
                 </form>
              </div>
              <div class="well" ng-if="miniUrlCtrl.errorString.length==0">
-                <p ng-if="miniUrlCtrl.miniUrl.length==0">
+                <p ng-if="miniUrlCtrl.miniUrlLink.length==0">
                     Your minified URL will be shown here.
                 </p> 
-                <p ng-if="miniUrlCtrl.miniUrl.length!=0">
+                <p ng-if="miniUrlCtrl.miniUrlLink.length!=0">
                     The URL location you have entered can be accessed by the following minified URL:<br/> 
-                    <span tabindex="4" ng-bind-html="miniUrlCtrl.miniUrl"></span>
+                    <span tabindex="4" ng-bind-html="miniUrlCtrl.miniUrlLink"></span>
+                    <br/>
+                    <button type="button" class="btn btn-success btn-xs" copy-to-clipboard="{{miniUrlCtrl.minifiedUrl}}">Copy To Clipboard</button>
                 </p>
              </div>
              <div class="alert alert-danger" ng-if="miniUrlCtrl.errorString.length!=0">

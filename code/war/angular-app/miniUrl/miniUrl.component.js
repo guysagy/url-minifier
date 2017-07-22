@@ -14,7 +14,7 @@
 
         miniUrlCtrl.minifyLongUrl = function() {
 
-            miniUrlCtrl.miniUrl = "";
+            miniUrlCtrl.miniUrlLink = "";
             miniUrlCtrl.errorString = "";
             miniUrlCtrl.dataLoading = true;
 
@@ -27,7 +27,7 @@
                 if (safeResult.isSafe === false) {
 
                     miniUrlCtrl.errorString = "Ouch. Your url is flagged by our systems as an online threat and therefore cannot be minified.";
-                    miniUrlCtrl.miniUrl = "";
+                    miniUrlCtrl.miniUrlLink = "";
                     miniUrlCtrl.dataLoading = false;
 
                 } else {
@@ -48,10 +48,11 @@
                                 // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
                                 // The character '=' is used for padding, but can be omitted or replaced.
                                 minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
-                                miniUrlCtrl.miniUrl = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
+                                miniUrlCtrl.minifiedUrl = minifyResult.minifiedUrl;
+                                miniUrlCtrl.miniUrlLink = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
                             } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
                                 miniUrlCtrl.errorString = minifyResult.errorString;
-                                miniUrlCtrl.miniUrl = "";
+                                miniUrlCtrl.miniUrlLink = "";
                             }
                         }
                         miniUrlCtrl.dataLoading = false;
@@ -84,7 +85,7 @@
         miniUrlCtrl.resetForm = function() {
 
             miniUrlCtrl.longUrl = "";
-            miniUrlCtrl.miniUrl = "";
+            miniUrlCtrl.miniUrlLink = "";
             miniUrlCtrl.errorString = "";
             miniUrlCtrl.dataLoading = false;
 
