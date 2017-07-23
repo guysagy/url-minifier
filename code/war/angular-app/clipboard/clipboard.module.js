@@ -1,5 +1,5 @@
 (function(){
-    'user strict';
+    'use strict';
 
     var clipboardModule = angular.module('clipboard', []);
 })();

@@ -11,9 +11,31 @@
 
     function miniUrlController($q, miniUrlService, googleSafeBrowsingService) {
         var miniUrlCtrl = this;
+        miniUrlCtrl.minifiedUrlsInSession = {};
+        miniUrlCtrl.minifiedUrl = "";
+        miniUrlCtrl.miniUrlLink = "";
+        miniUrlCtrl.errorString = "";
+        miniUrlCtrl.dataLoading = false; 
+
+        miniUrlCtrl.getMiniUrlLink = function() {
+            return "<a href=\"" + miniUrlCtrl.minifiedUrl + "?client=minifyApp" 
+                    + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" 
+                    + miniUrlCtrl.minifiedUrl + "</span></a>";
+        };
 
         miniUrlCtrl.minifyLongUrl = function() {
 
+            miniUrlCtrl.minifiedUrl = miniUrlCtrl.minifiedUrlsInSession[miniUrlCtrl.longUrl];
+            if (miniUrlCtrl.minifiedUrl != undefined) {
+                miniUrlCtrl.miniUrlLink = miniUrlCtrl.getMiniUrlLink();
+                miniUrlCtrl.errorString = "";
+                miniUrlCtrl.dataLoading = false;
+                miniUrlCtrl.dataForm.$setPristine();
+                miniUrlCtrl.dataForm.$setUntouched();
+                return;
+            }
+
+            miniUrlCtrl.minifiedUrl = "";
             miniUrlCtrl.miniUrlLink = "";
             miniUrlCtrl.errorString = "";
             miniUrlCtrl.dataLoading = true;
@@ -47,15 +69,17 @@
                                 miniUrlCtrl.errorString = "";
                                 // Per http://google.github.io/guava/releases/22.0-android/api/docs/ , re Base32 encoding:
                                 // The character '=' is used for padding, but can be omitted or replaced.
-                                minifyResult.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
-                                miniUrlCtrl.minifiedUrl = minifyResult.minifiedUrl;
-                                miniUrlCtrl.miniUrlLink = "<a href=\"" + minifyResult.minifiedUrl + "?client=minifyApp" + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span class=\"minifiedUrlSpan\">" + minifyResult.minifiedUrl + "</span></a>";
+                                miniUrlCtrl.minifiedUrl = minifyResult.minifiedUrl.replace(/=*$/, "");
+                                miniUrlCtrl.miniUrlLink = miniUrlCtrl.getMiniUrlLink();
                             } else if (typeof minifyResult.errorString == 'string' && minifyResult.errorString.length != 0) {
                                 miniUrlCtrl.errorString = minifyResult.errorString;
                                 miniUrlCtrl.miniUrlLink = "";
                             }
                         }
+                        miniUrlCtrl.minifiedUrlsInSession[miniUrlCtrl.longUrl] = miniUrlCtrl.minifiedUrl;
                         miniUrlCtrl.dataLoading = false;
+                        miniUrlCtrl.dataForm.$setPristine();
+                        miniUrlCtrl.dataForm.$setUntouched();
                     })
                     .catch( function failure(error) {
                         miniUrlCtrl.errorString = "Ouch. A server or network error has occured. Please try again. The error details are logged into your browser's console.";
@@ -78,7 +102,7 @@
         };
 
         miniUrlCtrl.isOkToSubmit = function(fieldName) {
-            var _isOkToSubmit = (miniUrlCtrl.dataForm.$valid && !miniUrlCtrl.dataLoading) ? true : false ;
+            var _isOkToSubmit = (miniUrlCtrl.dataForm['longUrl'].$dirty && miniUrlCtrl.dataForm.$valid && !miniUrlCtrl.dataLoading) ? true : false ;
             return _isOkToSubmit;
         };
 

@@ -9,7 +9,7 @@
                         <div ng-class="{'has-error': miniUrlCtrl.isFieldInErrorState('longUrl')}">
                             <textarea name="longUrl" id="longUrlTextArea" class="form-control" ng-model="miniUrlCtrl.longUrl" rows="15" style="resize:vertical" 
                                 placeholder="Enter a valid URL (no whitespaces, prepended 'http(s)://'), e.g. http://www.debka.co.il, the author's favorite web  site." 
-                                ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" required>
+                                ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" set-focus required>
                             </textarea>
                             <span id="validUrlErrorSpan" ng-show="miniUrlCtrl.isFieldInErrorState('longUrl')" class="help-block">A valid URL is required (no whitespaces, prepended 'http(s)://').</span>
                         </div>
@@ -29,8 +29,7 @@
                 <p ng-if="miniUrlCtrl.miniUrlLink.length!=0">
                     The URL location you have entered can be accessed by the following minified URL:<br/> 
                     <span tabindex="4" ng-bind-html="miniUrlCtrl.miniUrlLink"></span>
-                    <br/>
-                    <button type="button" class="btn btn-success btn-xs" copy-to-clipboard="{{miniUrlCtrl.minifiedUrl}}">Copy To Clipboard</button>
+                    <button type="button" class="btn btn-success btn-xs" style="float:right" copy-to-clipboard="{{miniUrlCtrl.minifiedUrl}}">Copy To Clipboard</button>
                 </p>
              </div>
              <div class="alert alert-danger" ng-if="miniUrlCtrl.errorString.length!=0">
