@@ -28,8 +28,8 @@
                 </p> 
                 <p ng-if="miniUrlCtrl.miniUrlLink.length!=0">
                     The URL location you have entered can be accessed by the following minified URL:<br/> 
-                    <span tabindex="4" ng-bind-html="miniUrlCtrl.miniUrlLink"></span>
-                    <button type="button" class="btn btn-success btn-xs" style="float:right" copy-to-clipboard="{{miniUrlCtrl.minifiedUrl}}">Copy To Clipboard</button>
+                    <span ng-bind-html="miniUrlCtrl.miniUrlLink"></span>
+                    <button tabindex="5" type="button" class="btn btn-success btn-xs" style="float:right" copy-to-clipboard="{{miniUrlCtrl.minifiedUrl}}">Copy To Clipboard</button>
                 </p>
              </div>
              <div class="alert alert-danger" ng-if="miniUrlCtrl.errorString.length!=0">
