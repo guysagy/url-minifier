@@ -19,8 +19,8 @@
         miniUrlCtrl.dataLoading = false; 
 
         miniUrlCtrl.getMiniUrlLink = function() {
-            return "<a href=\"" + miniUrlCtrl.minifiedUrl + "?client=minifyApp" 
-                    + "\" target=\"_blank\" title=\"Click to visit your long URL\"><span tabindex=\"4\" class=\"minifiedUrlSpan\">" 
+            return "<a href='" + miniUrlCtrl.minifiedUrl + "?client=minifyApp'" 
+                    + " target='_blank' title='Click to visit your long URL'><span tabindex='4' class='minifiedUrlSpan'>" 
                     + miniUrlCtrl.minifiedUrl + "</span></a>";
         };
 
@@ -107,8 +107,7 @@
         };
 
         miniUrlCtrl.isOkToSubmit = function(fieldName) {
-            var _isOkToSubmit = (miniUrlCtrl.dataForm['longUrl'].$dirty && miniUrlCtrl.dataForm.$valid && !miniUrlCtrl.dataLoading) ? true : false ;
-            return _isOkToSubmit;
+            return (miniUrlCtrl.dataForm['longUrl'].$dirty && miniUrlCtrl.dataForm.$valid && !miniUrlCtrl.dataLoading) ? true : false ;
         };
 
         miniUrlCtrl.resetForm = function() {

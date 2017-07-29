@@ -7,9 +7,10 @@
                     <p><span class="control-label glyphicon glyphicon-pencil"></span> &nbsp Enter your long URL below and hit the button to get your minified URL.</p>
                     <div class="form-group">
                         <div ng-class="{'has-error': miniUrlCtrl.isFieldInErrorState('longUrl')}">
+                        	<!--  autofocus does not work in Firefox version 52.2.1 (and less?) (32 bit) -->
                             <textarea name="longUrl" id="longUrlTextArea" class="form-control" ng-model="miniUrlCtrl.longUrl" rows="15" style="resize:vertical" 
                                 placeholder="Enter a valid URL (no whitespaces, prepended 'http(s)://'), e.g. http://www.debka.co.il, the author's favorite web  site." 
-                                ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" set-focus required>
+                                ng-pattern="/^https?:\/\/\S+$/i" tabindex="1" autofocus set-focus required>
                             </textarea>
                             <span id="validUrlErrorSpan" ng-show="miniUrlCtrl.isFieldInErrorState('longUrl')" class="help-block">A valid URL is required (no whitespaces, prepended 'http(s)://').</span>
                         </div>
