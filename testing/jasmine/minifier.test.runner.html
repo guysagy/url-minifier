@@ -4,28 +4,24 @@
     <meta charset="utf-8">
     <title>URL Minifier Jasmine Spec Runner</title>
 
-    <link rel="shortcut icon" type="image/png" href="./jasmine_favicon.png">
-    <link rel="stylesheet" href="./jasmine.css">
-    <script src="./jasmine.js"></script>
-    <script src="./jasmine-html.js"></script>
-    <script src="./boot.js"></script>
+    <link rel="shortcut icon" href="lib/jasmine-2.6.4/jasmine_favicon.png" type="image/png">
+    <link rel="stylesheet"    href="lib/jasmine-2.6.4/jasmine.css">
+    <script src="lib/jasmine-2.6.4/jasmine.js"></script>
+    <script src="lib/jasmine-2.6.4/jasmine-html.js"></script>
+    <script src="lib/jasmine-2.6.4/boot.js"></script>
 
-    <!-- Include source files here... -->
-    <!-- For development purposes, use non-minified versions of JS libraries -->
-    <!-- Libs -->
-    <script type="text/javascript" src="../../code/war/libs/jQuery/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="../../code/war/libs/bootstrap/js/bootstrap.js"/></script>
     <!-- CSS -->
-    <link rel="stylesheet" href="../../code/war/libs/styles/normalize.css"/>
-    <link rel="stylesheet" href="../../code/war/libs/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../code/war/bower_components/normalize-css/normalize.css"/>
+    <link rel="stylesheet" href="../../code/war/bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="../../code/war/appstyles.css"/>
-    <!-- AngularJS -->
-    <!--  For development purposes, use non-minified versions -->
-    <script type="text/javascript" src="../../code/war/libs/angular/angular.js"></script>
-    <script type="text/javascript" src="../../code/war/libs/angular/angular-ui-router.js"></script>
-    <script type="text/javascript" src="../../code/war/libs/angular/angular-sanitize.js"></script>
-    <!-- This is the AngularJS helper module with the needed utilities for Jasmine testing -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-mocks.js"></script>
+    <!-- Begin references to Javascript modules -->
+    <!-- Libs -->
+    <script type="text/javascript" src="../../code/war/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../code/war/bower_components/bootstrap/dist/js/bootstrap.js"/></script>
+    <script type="text/javascript" src="../../code/war/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../../code/war/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script type="text/javascript" src="../../code/war/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script type="text/javascript" src="../../code/war/bower_components/angular-mocks/angular-mocks.js"></script>
     <!--  Application JS -->
     <script type="text/javascript" src="../../code/war/angular-app/safeRedirect/safeRedirect.module.js"></script>
     <script type="text/javascript" src="../../code/war/angular-app/safeRedirect/safeRedirect.component.js"></script>
@@ -40,7 +36,7 @@
     <!-- End references to Javascript modules -->
 
     <!-- Include spec files here... -->
-    <script src="./minifier.spec.js"></script>
+    <script src="spec/minifier.spec.js"></script>
 
 </head>
 <body>
